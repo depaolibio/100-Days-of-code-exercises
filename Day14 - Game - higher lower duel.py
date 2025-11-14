@@ -19,13 +19,13 @@ vs = r"""
 |___/____(_)
 """
 
-def item():
+def item(): #pop an item (dictionary term) from the list of data.
     try:
         return data.pop(random.randint(0, len(data) - 1))
     except ValueError:
         return data.pop()
 
-def scoring(num):
+def scoring(num): #compares numbers/scores within a duel, retrieving score and pulling a new item for the next round. 
     global A, B, SCORE, DIC
     a_score = A["follower_count"]
     b_score = B["follower_count"]
@@ -59,10 +59,11 @@ B = item()
 SCORE = 0
 DIC = len(data)
 
-while True:
+while True: #keeps dueling until User guess the wrong winner!
     print(f"Compare A: {A["name"]}, a {A["description"]}, from {A["country"]}.")
     print(vs)
     print(f"Against B: {B["name"]}, a {B["description"]}, from {B["country"]}.")
     answer = input("Who has more followers? Type 'A' or 'B': ").upper()
     scoring(answer)
+
     print(f"You're right! Current score: {SCORE}")
