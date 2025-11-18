@@ -34,9 +34,13 @@ print("☕")
 def check_resources(drink):
     global MENU
     if drink in MENU:
-        ingredients = MENU[drink]["ingredients"]
+        for key_2 in MENU[drink]["ingredients"]:
+            print(key_2, end=" ")
+        for key in MENU[drink]["ingredients"]:
+            volume = MENU[drink]["ingredients"][key]
+            print(volume, end=" ")
         cost = MENU[drink]["cost"]
-        print(f"The ingredients for {drink} are {ingredients} and it will cost {cost}.")
+        print(f"\nThe ingredients and volumes are listed above, and it will cost {cost}.")
 
 input = input("What would you like to order? (espresso/latte/cappuccino): ").lower()
 if input == "off":
