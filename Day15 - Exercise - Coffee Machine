@@ -26,27 +26,29 @@ MENU = {
 }
 
 resources = {
-    "water": 300,
-    "milk": 200,
-    "coffee": 100,
+    "water": 600,
+    "milk": 300,
+    "coffee": 150,
 }
 print("☕ ", end="")
 
-def drink_ingredients_volumes(drink):
+def drink_ingredients_volumes(drink): #take input drink and retrieve a list of ingredients and volumes used
     list_ingredients = []
     list_ing_volumes = []
     for k in MENU[drink]["ingredients"]:
         list_ingredients.append(k)
         list_ing_volumes.append(MENU[drink]["ingredients"][k])
-    print(f"{drink} uses: {" ".join(list_ingredients)}.")
-    print(list_ing_volumes)
+    #print(f"{drink} uses: {" ".join(list_ingredients)}.")
+    #print(list_ing_volumes)
     return [list_ingredients, list_ing_volumes]
 
 money = 0
 machine_on = True
+input_history = []
 
 while machine_on:
     user_input = input("What would you like to order? (espresso/latte/cappuccino): ").lower()
+    input_history.append(user_input)
 
     if user_input == "off":
         print("the machine is being turned off... goodbye!")
@@ -54,7 +56,9 @@ while machine_on:
 
     if user_input == "report":
         print(
-            f"Water: {resources["water"]}ml\nMilk: {resources["milk"]}ml\nCoffee: {resources["coffee"]}g\nMoney: ${money}.")
+            f"Water: {resources["water"]}ml\nMilk: {resources["milk"]}ml\nCoffee: {resources["coffee"]}g\n'Bank': ${money}.")
+        if len(input_history) >= 2:
+            print (f"Your requested {input_history[-2]} requires {MENU[input_history[-2]]["ingredients"]}.")
         continue
 
     if user_input not in MENU:
@@ -77,21 +81,23 @@ while machine_on:
         new_amount = resources_vol[i] - input_ing_vol[1][i]
         latest_resource.append(new_amount)
         if new_amount < 0:
-            print("Sorry, not enough resources available.")
+            print("Sorry, not enough resources available. Type 'report' for details.")
             sufficient_resources = False
             break
-    print(latest_resource)
+    #print(latest_resource)
     if not sufficient_resources:
         continue
 
-    #updating the dictionary of resources with the vols of the latest resources available:
+    #updating the dictionary of resources with the volumes of the latest resources available and logging cost:
     keys = list(resources.keys())
     for i, key in enumerate(keys):
         resources[key] = latest_resource[i]
-    print(resources)
 
     money += MENU[user_input]["cost"]
 
+    if len(input_history) >= 2:
+        if input_history[-1] == input_history[-2]:
+            print("Same drink as last time!")
     print(f"Here is your {user_input} ☕. Enjoy!")
-    print(f"Remaining resources: {resources}")
+    #print(f"Resources left: water {resources["water"]}ml, milk {resources["milk"]}ml, and coffee {resources["coffee"]}g.")
     print(f"Money collected: ${money}.\n")
