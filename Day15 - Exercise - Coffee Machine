@@ -2,6 +2,7 @@ MENU = {
     "espresso": {
         "ingredients": {
             "water": 50,
+            "milk": 0,
             "coffee": 18,
         },
         "cost": 1.5,
@@ -29,27 +30,68 @@ resources = {
     "milk": 200,
     "coffee": 100,
 }
-print("☕")
+print("☕ ", end="")
 
-def check_resources(drink):
-    global MENU
-    if drink in MENU:
-        for k in MENU[drink]["ingredients"]:
-            print(k)
-            print(MENU[drink]["ingredients"][k])
-            new_resources = (resources[k]) - MENU[drink]["ingredients"][k]
-            print(new_resources)
-        for k in resources:
-            print(k)
-            print(resources[k])
-        cost = MENU[drink]["cost"]
-        print(f"\nThe ingredients and volumes are listed above, and it will cost {cost}.")
+def drink_ingredients_volumes(drink):
+    list_ingredients = []
+    list_ing_volumes = []
+    for k in MENU[drink]["ingredients"]:
+        list_ingredients.append(k)
+        list_ing_volumes.append(MENU[drink]["ingredients"][k])
+    print(f"{drink} uses: {" ".join(list_ingredients)}.")
+    print(list_ing_volumes)
+    return [list_ingredients, list_ing_volumes]
 
-input = input("What would you like to order? (espresso/latte/cappuccino): ").lower()
-if input == "off":
-    print("the machine is being turned off... goodbye!")
-    exit()
-if input == "report":
+money = 0
+machine_on = True
+
+while machine_on:
+    user_input = input("What would you like to order? (espresso/latte/cappuccino): ").lower()
+
+    if user_input == "off":
+        print("the machine is being turned off... goodbye!")
+        break
+
+    if user_input == "report":
+        print(
+            f"Water: {resources["water"]}ml\nMilk: {resources["milk"]}ml\nCoffee: {resources["coffee"]}g\nMoney: ${money}.")
+        continue
+
+    if user_input not in MENU:
+        print("Invalid selection. Please try again.")
+        continue
+
+    input_ing_vol = drink_ingredients_volumes(user_input)
+
+    #checking for resources:
+    resources_vol = []
+    for key, value in resources.items():
+        if key == "milk" and "milk" not in input_ing_vol[0]:
+            resources_vol.append(0)
+        else:
+            resources_vol.append(value)
+
+    latest_resource = []
+    sufficient_resources = True
+    for i in range (len(resources_vol)):
+        new_amount = resources_vol[i] - input_ing_vol[1][i]
+        latest_resource.append(new_amount)
+        if new_amount < 0:
+            print("Sorry, not enough resources available.")
+            sufficient_resources = False
+            break
+    print(latest_resource)
+    if not sufficient_resources:
+        continue
+
+    #updating the dictionary of resources with the vols of the latest resources available:
+    keys = list(resources.keys())
+    for i, key in enumerate(keys):
+        resources[key] = latest_resource[i]
     print(resources)
-    exit()
-check_resources(input)
+
+    money += MENU[user_input]["cost"]
+
+    print(f"Here is your {user_input} ☕. Enjoy!")
+    print(f"Remaining resources: {resources}")
+    print(f"Money collected: ${money}.\n")
