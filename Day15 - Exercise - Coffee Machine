@@ -100,4 +100,4 @@ while machine_on:
             print("Same drink as last time!")
     print(f"Here is your {user_input} ☕. Enjoy!")
     #print(f"Resources left: water {resources["water"]}ml, milk {resources["milk"]}ml, and coffee {resources["coffee"]}g.")
-    print(f"Money collected: ${money}.\n")
+    print(f"Money collected: ${money}.")
