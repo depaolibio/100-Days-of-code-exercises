@@ -1,0 +1,32 @@
+import turtle
+#timmy = turtle.Turtle()
+#from turtle import Turtle, Screen
+import random
+timmy = turtle.Turtle() #timmy is an OBJECT! If printed, it becomes an object in the memory of the computer
+# (e.g., turtle.Turtle object at 0x000001F373DD78C0).
+
+print(timmy)
+timmy.shape("turtle")
+# length = random.randint(30,150)
+# print(length)
+# angle = random.randint(10,330)
+# print(angle)
+color_list = ["antiquewhite3", "aquamarine2", "blueviolet", "brown3", "chartreuse3", "black", "darkgoldenrod3", "cyan1", "deeppink2"]
+timmy.color(random.choice(color_list))
+timmy.fillcolor(random.choice(color_list))
+
+count = 0
+timmy.begin_fill()
+while True:
+    length = random.randint(30, 150)
+    angle = random.randint(10, 330)
+    timmy.forward(length)
+    timmy.left(angle)
+    count += 1
+    if count == 15:
+        break
+timmy.home()
+#timmy.end_fill()
+my_screen = turtle.Screen()
+print(my_screen.canvheight)
+my_screen.exitonclick()
