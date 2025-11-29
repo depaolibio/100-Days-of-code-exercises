@@ -1,0 +1,14 @@
+# from prettytable import from_csv
+# with open("TTS_Audio_Notes_Weeks_11-20.csv") as fp:
+#     mytable = from_csv(fp)
+#     print(mytable)
+
+from prettytable import PrettyTable
+table = PrettyTable()
+
+#table.field_names = ["Pokemon Name", "Type"]
+table.add_column("Pokemon Name", ["Pikachu", "Squirtle", "Charmander"])
+table.add_column("Type", ["Electric", "Water", "Fire"])
+table.align = "l"
+
+print(table)
